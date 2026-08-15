@@ -22,8 +22,12 @@ export function CropperModal({
       const canvas = document.createElement("canvas");
       const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
       const scaleY = imageRef.current.naturalHeight / imageRef.current.height;
-      canvas.width = crop.width;
-      canvas.height = crop.height;
+
+      const targetWidth = crop.width * scaleX;
+      const targetHeight = crop.height * scaleY;
+
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
       const ctx = canvas.getContext("2d");
 
       if (ctx) {
@@ -35,8 +39,8 @@ export function CropperModal({
           crop.height * scaleY,
           0,
           0,
-          crop.width,
-          crop.height,
+          targetWidth,
+          targetHeight,
         );
         const base64Image = canvas.toDataURL("image/png");
         onCropComplete(base64Image);

@@ -154,6 +154,10 @@ export function Editor({ imageFile, onReset }: EditorProps) {
       const img = new window.Image();
       img.src = url;
       img.onload = () => {
+        let initialScale = 1;
+        if (img.width > 200) {
+          initialScale = 200 / img.width;
+        }
         setItems([
           ...items,
           {
@@ -162,6 +166,8 @@ export function Editor({ imageFile, onReset }: EditorProps) {
             x: 50,
             y: 50,
             rotation: 0,
+            scaleX: initialScale,
+            scaleY: initialScale,
             imageObj: img,
           },
         ]);
@@ -452,6 +458,18 @@ export function Editor({ imageFile, onReset }: EditorProps) {
             )}
           </Layer>
         </Stage>
+      </div>
+
+      <div
+        style={{
+          marginTop: "0.75rem",
+          color: "var(--text-secondary)",
+          fontSize: "0.9rem",
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
+        Resolução Original: {imgWidth} x {imgHeight} px
       </div>
 
       <div className="actions-container">
