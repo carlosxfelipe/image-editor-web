@@ -86,6 +86,9 @@ export function Editor({ imageFile, onReset }: EditorProps) {
   const trRef = useRef<any>(null);
 
   const [isCropping, setIsCropping] = useState(false);
+  const [flattenedImageUrl, setFlattenedImageUrl] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     const url = URL.createObjectURL(imageFile);
@@ -251,16 +254,37 @@ export function Editor({ imageFile, onReset }: EditorProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedId, items]);
 
+  const getExportPixelRatio = () => {
+    const isRotated = mainRotation === 90 || mainRotation === 270;
+    const imgW = isRotated ? image.height : image.width;
+    const maxWidth = Math.min(window.innerWidth - 80, 800);
+    const currentScale = Math.min(maxWidth / imgW, 1);
+    return Math.max(1 / currentScale, 2);
+  };
+
   const handleDownload = () => {
     setSelectedId(null); // Remove selection to hide transformer
     setTimeout(() => {
-      const uri = stageRef.current.toDataURL({ pixelRatio: 2 });
+      const uri = stageRef.current.toDataURL({
+        pixelRatio: getExportPixelRatio(),
+      });
       const link = document.createElement("a");
       link.download = "edited-image.png";
       link.href = uri;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    }, 100);
+  };
+
+  const handleCropClick = () => {
+    setSelectedId(null); // Hide transformer before capture
+    setTimeout(() => {
+      const uri = stageRef.current.toDataURL({
+        pixelRatio: getExportPixelRatio(),
+      });
+      setFlattenedImageUrl(uri);
+      setIsCropping(true);
     }, 100);
   };
 
@@ -281,11 +305,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
   return (
     <div className="result-section">
       <div className="toolbar">
-        <button
-          className="btn-icon"
-          onClick={() => setIsCropping(true)}
-          title="Recortar"
-        >
+        <button className="btn-icon" onClick={handleCropClick} title="Recortar">
           <CropIcon size={20} />
         </button>
         <button className="btn-icon" onClick={rotateMain} title="Rotacionar">
@@ -625,11 +645,17 @@ export function Editor({ imageFile, onReset }: EditorProps) {
 
       {isCropping && (
         <CropperModal
-          imageUrl={imageUrl}
-          onClose={() => setIsCropping(false)}
+          imageUrl={flattenedImageUrl || imageUrl}
+          onClose={() => {
+            setIsCropping(false);
+            setFlattenedImageUrl(null);
+          }}
           onCropComplete={(newUrl) => {
             setImageUrl(newUrl);
+            setItems([]);
+            setMainRotation(0);
             setIsCropping(false);
+            setFlattenedImageUrl(null);
           }}
         />
       )}
