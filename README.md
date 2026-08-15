@@ -11,6 +11,7 @@ An ultra-fast image editor running 100% client-side right in your browser. Built
   * **Rotate:** Rotate the main image with automatic Canvas readjustment.
   * **Add Text:** Insert text annotations and position them anywhere.
   * **Add Arrows:** Create awesome pointers. Select any arrow to quickly change its color, make it dashed, or turn it into a double-ended arrow.
+  * **Obfuscation Tools (Blur & Pixelate):** Spawn draggable "magic lenses" to safely blur or pixelate sensitive information (like faces, documents or license plates). You can seamlessly toggle the active filter between blur and pixelate using the context panel.
   * **Image Overlay:** Paste or upload secondary images (like logos or stickers) over the original image.
 * **Dynamic Properties Panel:** When an element is selected on the canvas, a floating properties bar appears, allowing you to instantly change its color using a predefined palette and toggle styles in real-time.
 * **Premium UI:** Modern and vibrant Glassmorphism design featuring Violet and Fuchsia gradients.

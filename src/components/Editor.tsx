@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import Konva from "konva";
 import {
   Stage,
   Layer,
@@ -6,6 +7,8 @@ import {
   Text,
   Arrow,
   Transformer,
+  Group,
+  Rect,
 } from "react-konva";
 import useImage from "use-image";
 import { v4 as uuidv4 } from "uuid";
@@ -18,6 +21,8 @@ import {
   ArrowUpRight,
   ArrowRightLeft,
   Crop as CropIcon,
+  Droplet,
+  Grid,
 } from "lucide-react";
 import { CropperModal } from "./CropperModal";
 
@@ -26,7 +31,7 @@ interface EditorProps {
   onReset: () => void;
 }
 
-type ItemType = "text" | "arrow" | "image";
+type ItemType = "text" | "arrow" | "image" | "filter-box";
 
 interface CanvasItem {
   id: string;
@@ -41,7 +46,33 @@ interface CanvasItem {
   color?: string;
   isDashed?: boolean;
   isDouble?: boolean;
+  width?: number;
+  height?: number;
+  filterType?: "blur" | "pixelate";
 }
+
+const FilteredImage = ({ image, filterType, ...props }: any) => {
+  const imageRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (imageRef.current) {
+      imageRef.current.cache();
+    }
+  }, [image, filterType]);
+
+  return (
+    <KonvaImage
+      ref={imageRef}
+      image={image}
+      filters={
+        filterType === "blur" ? [Konva.Filters.Blur] : [Konva.Filters.Pixelate]
+      }
+      blurRadius={20}
+      pixelSize={10}
+      {...props}
+    />
+  );
+};
 
 export function Editor({ imageFile, onReset }: EditorProps) {
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -139,6 +170,22 @@ export function Editor({ imageFile, onReset }: EditorProps) {
         color: "#ef4444",
         isDashed: false,
         isDouble: false,
+      },
+    ]);
+  };
+
+  const addFilterBox = (filterType: "blur" | "pixelate") => {
+    setItems([
+      ...items,
+      {
+        id: uuidv4(),
+        type: "filter-box",
+        x: 50,
+        y: 50,
+        rotation: 0,
+        width: 150,
+        height: 150,
+        filterType,
       },
     ]);
   };
@@ -250,6 +297,20 @@ export function Editor({ imageFile, onReset }: EditorProps) {
         <button className="btn-icon" onClick={addArrow} title="Adicionar Seta">
           <ArrowUpRight size={20} color="#ef4444" />
         </button>
+        <button
+          className="btn-icon"
+          onClick={() => addFilterBox("blur")}
+          title="Adicionar Desfoque"
+        >
+          <Droplet size={20} />
+        </button>
+        <button
+          className="btn-icon"
+          onClick={() => addFilterBox("pixelate")}
+          title="Adicionar Pixelado"
+        >
+          <Grid size={20} />
+        </button>
 
         <label
           className="btn-icon"
@@ -335,6 +396,34 @@ export function Editor({ imageFile, onReset }: EditorProps) {
                     title="Seta Dupla"
                   >
                     <ArrowRightLeft size={16} />
+                  </button>
+                </>
+              )}
+
+              {selectedItem.type === "filter-box" && (
+                <>
+                  <button
+                    className={`btn-icon ${selectedItem.filterType === "blur" ? "active" : ""}`}
+                    onClick={() =>
+                      updateItemProperty(selectedItem.id, "filterType", "blur")
+                    }
+                    title="Desfoque"
+                    style={{ marginLeft: "0.5rem" }}
+                  >
+                    <Droplet size={16} />
+                  </button>
+                  <button
+                    className={`btn-icon ${selectedItem.filterType === "pixelate" ? "active" : ""}`}
+                    onClick={() =>
+                      updateItemProperty(
+                        selectedItem.id,
+                        "filterType",
+                        "pixelate",
+                      )
+                    }
+                    title="Pixelado"
+                  >
+                    <Grid size={16} />
                   </button>
                 </>
               )}
@@ -441,6 +530,51 @@ export function Editor({ imageFile, onReset }: EditorProps) {
                     key={item.id}
                     image={item.imageObj}
                   />
+                );
+              }
+              if (item.type === "filter-box") {
+                return (
+                  <Group key={item.id}>
+                    <Group
+                      clipFunc={(ctx) => {
+                        ctx.save();
+                        ctx.translate(item.x, item.y);
+                        ctx.rotate((item.rotation * Math.PI) / 180);
+                        ctx.beginPath();
+                        ctx.rect(
+                          0,
+                          0,
+                          (item.width || 150) * (item.scaleX || 1),
+                          (item.height || 150) * (item.scaleY || 1),
+                        );
+                        ctx.closePath();
+                        ctx.restore();
+                      }}
+                    >
+                      <FilteredImage
+                        image={image}
+                        filterType={item.filterType}
+                        x={canvasWidth / 2}
+                        y={canvasHeight / 2}
+                        offsetX={imgWidth / 2}
+                        offsetY={imgHeight / 2}
+                        scaleX={scale}
+                        scaleY={scale}
+                        rotation={mainRotation}
+                      />
+                    </Group>
+                    <Rect
+                      {...commonProps}
+                      width={item.width || 150}
+                      height={item.height || 150}
+                      fill="rgba(0,0,0,0.01)"
+                      stroke={
+                        selectedId === item.id ? "#8b5cf6" : "rgba(0,0,0,0.1)"
+                      }
+                      strokeWidth={1}
+                      dash={[5, 5]}
+                    />
+                  </Group>
                 );
               }
               return null;

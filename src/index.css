@@ -227,7 +227,7 @@ p.subtitle {
   display: flex;
   gap: 1rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   margin: 1.5rem auto 0;
 }
 
