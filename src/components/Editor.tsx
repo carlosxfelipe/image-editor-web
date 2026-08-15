@@ -341,32 +341,33 @@ export function Editor({ imageFile, onReset }: EditorProps) {
                 marginLeft: "0.5rem",
               }}
             >
-              {[
-                "#ef4444",
-                "#8b5cf6",
-                "#eab308",
-                "#10b981",
-                "#ffffff",
-                "#000000",
-              ].map((c) => (
-                <button
-                  key={c}
-                  style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: "50%",
-                    backgroundColor: c,
-                    border: "2px solid",
-                    borderColor:
-                      selectedItem.color === c ? "white" : "transparent",
-                    cursor: "pointer",
-                  }}
-                  onClick={() =>
-                    updateItemProperty(selectedItem.id, "color", c)
-                  }
-                  title="Mudar Cor"
-                />
-              ))}
+              {selectedItem.type !== "filter-box" &&
+                [
+                  "#ef4444",
+                  "#8b5cf6",
+                  "#eab308",
+                  "#10b981",
+                  "#ffffff",
+                  "#000000",
+                ].map((c) => (
+                  <button
+                    key={c}
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: "50%",
+                      backgroundColor: c,
+                      border: "2px solid",
+                      borderColor:
+                        selectedItem.color === c ? "white" : "transparent",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      updateItemProperty(selectedItem.id, "color", c)
+                    }
+                    title="Mudar Cor"
+                  />
+                ))}
 
               {selectedItem.type === "arrow" && (
                 <>
