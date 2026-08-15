@@ -26,6 +26,43 @@ import {
 } from "lucide-react";
 import { CropperModal } from "./CropperModal";
 
+const styles: { [key: string]: React.CSSProperties } = {
+  uploadLabel: { cursor: "pointer" },
+  hiddenInput: { display: "none" },
+  contextPanel: {
+    display: "flex",
+    gap: "0.5rem",
+    alignItems: "center",
+    borderLeft: "1px solid var(--card-border)",
+    paddingLeft: "1rem",
+    marginLeft: "0.5rem",
+  },
+  marginLeft: { marginLeft: "0.5rem" },
+  deleteButton: {
+    color: "#ef4444",
+    borderColor: "#ef4444",
+    marginLeft: "0.5rem",
+  },
+  canvasContainer: {
+    border: "1px solid var(--card-border)",
+    borderRadius: "var(--radius-md)",
+    overflow: "hidden",
+    display: "inline-block",
+    background: "rgba(0,0,0,0.5)",
+  },
+  resolutionText: {
+    marginTop: "0.75rem",
+    color: "var(--text-secondary)",
+    fontSize: "0.9rem",
+    textAlign: "center",
+    width: "100%",
+  },
+  cancelButton: {
+    background: "transparent",
+    border: "1px solid var(--card-border)",
+  },
+};
+
 interface EditorProps {
   imageFile: File;
   onReset: () => void;
@@ -334,13 +371,13 @@ export function Editor({ imageFile, onReset }: EditorProps) {
 
         <label
           className="btn-icon"
-          style={{ cursor: "pointer" }}
+          style={styles.uploadLabel}
           title="Colar Imagem"
         >
           <input
             type="file"
             accept="image/*"
-            style={{ display: "none" }}
+            style={styles.hiddenInput}
             onChange={handleExtraImageUpload}
           />
           <ImageIcon size={20} />
@@ -351,16 +388,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
           if (!selectedItem) return null;
 
           return (
-            <div
-              style={{
-                display: "flex",
-                gap: "0.5rem",
-                alignItems: "center",
-                borderLeft: "1px solid var(--card-border)",
-                paddingLeft: "1rem",
-                marginLeft: "0.5rem",
-              }}
-            >
+            <div style={styles.contextPanel}>
               {selectedItem.type !== "filter-box" &&
                 [
                   "#ef4444",
@@ -401,7 +429,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
                       )
                     }
                     title="Tracejado"
-                    style={{ marginLeft: "0.5rem" }}
+                    style={styles.marginLeft}
                   >
                     <ArrowUpRight size={16} strokeDasharray="4 4" />
                   </button>
@@ -429,7 +457,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
                       updateItemProperty(selectedItem.id, "filterType", "blur")
                     }
                     title="Desfoque"
-                    style={{ marginLeft: "0.5rem" }}
+                    style={styles.marginLeft}
                   >
                     <Droplet size={16} />
                   </button>
@@ -452,11 +480,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
               <button
                 className="btn-icon"
                 onClick={deleteSelected}
-                style={{
-                  color: "#ef4444",
-                  borderColor: "#ef4444",
-                  marginLeft: "0.5rem",
-                }}
+                style={styles.deleteButton}
                 title="Apagar Selecionado"
               >
                 <Trash2 size={20} />
@@ -466,15 +490,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
         })()}
       </div>
 
-      <div
-        style={{
-          border: "1px solid var(--card-border)",
-          borderRadius: "var(--radius-md)",
-          overflow: "hidden",
-          display: "inline-block",
-          background: "rgba(0,0,0,0.5)",
-        }}
-      >
+      <div style={styles.canvasContainer}>
         <Stage
           width={canvasWidth}
           height={canvasHeight}
@@ -615,15 +631,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
         </Stage>
       </div>
 
-      <div
-        style={{
-          marginTop: "0.75rem",
-          color: "var(--text-secondary)",
-          fontSize: "0.9rem",
-          textAlign: "center",
-          width: "100%",
-        }}
-      >
+      <div style={styles.resolutionText}>
         Resolução Original: {imgWidth} x {imgHeight} px
       </div>
 
@@ -631,10 +639,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
         <button
           className="btn-primary"
           onClick={onReset}
-          style={{
-            background: "transparent",
-            border: "1px solid var(--card-border)",
-          }}
+          style={styles.cancelButton}
         >
           Cancelar
         </button>
