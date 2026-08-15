@@ -4,19 +4,6 @@ import { Dropzone } from "./components/Dropzone";
 import { Editor } from "./components/Editor";
 import { GithubIcon } from "./components/GithubIcon";
 
-const styles: { [key: string]: React.CSSProperties } = {
-  footer: {
-    marginTop: "3rem",
-    textAlign: "center",
-    color: "var(--text-secondary)",
-    fontSize: "0.95rem",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "1rem",
-  },
-};
-
 function App() {
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -55,5 +42,18 @@ function App() {
     </>
   );
 }
+
+const styles: { [key: string]: React.CSSProperties } = {
+  footer: {
+    marginTop: "3rem",
+    textAlign: "center",
+    color: "var(--text-secondary)",
+    fontSize: "0.95rem",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "1rem",
+  },
+};
 
 export default App;

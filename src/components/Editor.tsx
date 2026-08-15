@@ -26,43 +26,6 @@ import {
 } from "lucide-react";
 import { CropperModal } from "./CropperModal";
 
-const styles: { [key: string]: React.CSSProperties } = {
-  uploadLabel: { cursor: "pointer" },
-  hiddenInput: { display: "none" },
-  contextPanel: {
-    display: "flex",
-    gap: "0.5rem",
-    alignItems: "center",
-    borderLeft: "1px solid var(--card-border)",
-    paddingLeft: "1rem",
-    marginLeft: "0.5rem",
-  },
-  marginLeft: { marginLeft: "0.5rem" },
-  deleteButton: {
-    color: "#ef4444",
-    borderColor: "#ef4444",
-    marginLeft: "0.5rem",
-  },
-  canvasContainer: {
-    border: "1px solid var(--card-border)",
-    borderRadius: "var(--radius-md)",
-    overflow: "hidden",
-    display: "inline-block",
-    background: "rgba(0,0,0,0.5)",
-  },
-  resolutionText: {
-    marginTop: "0.75rem",
-    color: "var(--text-secondary)",
-    fontSize: "0.9rem",
-    textAlign: "center",
-    width: "100%",
-  },
-  cancelButton: {
-    background: "transparent",
-    border: "1px solid var(--card-border)",
-  },
-};
-
 interface EditorProps {
   imageFile: File;
   onReset: () => void;
@@ -667,3 +630,40 @@ export function Editor({ imageFile, onReset }: EditorProps) {
     </div>
   );
 }
+
+const styles: { [key: string]: React.CSSProperties } = {
+  uploadLabel: { cursor: "pointer" },
+  hiddenInput: { display: "none" },
+  contextPanel: {
+    display: "flex",
+    gap: "0.5rem",
+    alignItems: "center",
+    borderLeft: "1px solid var(--card-border)",
+    paddingLeft: "1rem",
+    marginLeft: "0.5rem",
+  },
+  marginLeft: { marginLeft: "0.5rem" },
+  deleteButton: {
+    color: "#ef4444",
+    borderColor: "#ef4444",
+    marginLeft: "0.5rem",
+  },
+  canvasContainer: {
+    border: "1px solid var(--card-border)",
+    borderRadius: "var(--radius-md)",
+    overflow: "hidden",
+    display: "inline-block",
+    background: "rgba(0,0,0,0.5)",
+  },
+  resolutionText: {
+    marginTop: "0.75rem",
+    color: "var(--text-secondary)",
+    fontSize: "0.9rem",
+    textAlign: "center",
+    width: "100%",
+  },
+  cancelButton: {
+    background: "transparent",
+    border: "1px solid var(--card-border)",
+  },
+};

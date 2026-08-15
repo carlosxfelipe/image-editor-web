@@ -3,24 +3,6 @@ import { UploadCloud, Loader2 } from "lucide-react";
 import { play } from "cuelume";
 import { mergeImagesHorizontally } from "../utils/imageMerger";
 
-const styles: { [key: string]: React.CSSProperties } = {
-  hiddenInput: { display: "none" },
-  loader: { animation: "spin 1s linear infinite" },
-  textContainerProcessing: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "0.25rem",
-  },
-  title: { fontSize: "1.2rem", fontWeight: 600 },
-  subtitleProcessing: { color: "var(--text-secondary)", fontSize: "0.9rem" },
-  textContainer: { display: "flex", flexDirection: "column", gap: "0.5rem" },
-  subtitle: {
-    color: "var(--text-secondary)",
-    fontSize: "0.9rem",
-    lineHeight: "1.4",
-  },
-};
-
 interface DropzoneProps {
   onFileSelect: (file: File) => void;
 }
@@ -148,3 +130,21 @@ export function Dropzone({ onFileSelect }: DropzoneProps) {
     </div>
   );
 }
+
+const styles: { [key: string]: React.CSSProperties } = {
+  hiddenInput: { display: "none" },
+  loader: { animation: "spin 1s linear infinite" },
+  textContainerProcessing: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+  },
+  title: { fontSize: "1.2rem", fontWeight: 600 },
+  subtitleProcessing: { color: "var(--text-secondary)", fontSize: "0.9rem" },
+  textContainer: { display: "flex", flexDirection: "column", gap: "0.5rem" },
+  subtitle: {
+    color: "var(--text-secondary)",
+    fontSize: "0.9rem",
+    lineHeight: "1.4",
+  },
+};
