@@ -49,7 +49,7 @@ function App() {
     <>
       <div className="glass-card" style={{ position: "relative" }}>
         <button
-          className="btn-icon"
+          className="btn-icon theme-toggle-btn"
           onClick={cycleTheme}
           style={styles.themeToggle}
           title={`Tema: ${theme}`}

@@ -292,4 +292,8 @@ p.subtitle {
     flex: none !important;
     width: 100%;
   }
+
+  .theme-toggle-btn {
+    display: none !important;
+  }
 }
