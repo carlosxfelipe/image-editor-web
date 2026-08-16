@@ -654,7 +654,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: "var(--radius-md)",
     overflow: "hidden",
     display: "inline-block",
-    background: "rgba(0,0,0,0.5)",
+    background: "var(--dropzone-bg)",
+    maxWidth: "100%",
   },
   resolutionText: {
     marginTop: "0.75rem",
@@ -666,5 +667,6 @@ const styles: { [key: string]: React.CSSProperties } = {
   cancelButton: {
     background: "transparent",
     border: "1px solid var(--card-border)",
+    color: "var(--text-primary)",
   },
 };
