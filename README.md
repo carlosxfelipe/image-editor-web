@@ -1,6 +1,6 @@
 # Image Editor Web App 🎨
 
-*(🔗 [Live Demo](https://image-editor-web2.netlify.app/))*
+*(🔗 [Live Demo](https://simple-image-editor-web.netlify.app/))*
 
 An ultra-fast image editor running 100% client-side right in your browser. Built with React, Vite, and KonvaJS, this project features a beautiful Glassmorphism-based UI, providing not only great utility but also a premium and visually engaging user experience.
 
