@@ -262,8 +262,15 @@ export function Editor({ imageFile, onReset }: EditorProps) {
   const getExportPixelRatio = () => {
     const isRotated = mainRotation === 90 || mainRotation === 270;
     const imgW = isRotated ? image.height : image.width;
+    const imgH = isRotated ? image.width : image.height;
+
     const maxWidth = Math.min(window.innerWidth - 80, 1100);
-    const currentScale = Math.min(maxWidth / imgW, 1);
+    const maxHeight = Math.min(window.innerHeight - 250, 800);
+
+    const scaleW = maxWidth / imgW;
+    const scaleH = maxHeight / imgH;
+    const currentScale = Math.min(scaleW, scaleH, 1);
+
     return 1 / currentScale;
   };
 
