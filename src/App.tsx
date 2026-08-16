@@ -18,6 +18,18 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const rootEl = document.getElementById("root");
+    if (rootEl) {
+      if (imageFile) {
+        rootEl.style.maxWidth = "1200px";
+        rootEl.style.transition = "max-width 0.3s ease";
+      } else {
+        rootEl.style.maxWidth = "900px";
+      }
+    }
+  }, [imageFile]);
+
+  useEffect(() => {
     localStorage.setItem("theme", theme);
     const root = document.documentElement;
     if (theme === "system") {

@@ -23,8 +23,10 @@ import {
   Crop as CropIcon,
   Droplet,
   Grid,
+  Maximize,
 } from "lucide-react";
 import { CropperModal } from "./CropperModal";
+import { ResizeModal } from "./ResizeModal";
 
 interface EditorProps {
   imageFile: File;
@@ -86,6 +88,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
   const trRef = useRef<any>(null);
 
   const [isCropping, setIsCropping] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
   const [flattenedImageUrl, setFlattenedImageUrl] = useState<string | null>(
     null,
   );
@@ -259,7 +262,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
   const getExportPixelRatio = () => {
     const isRotated = mainRotation === 90 || mainRotation === 270;
     const imgW = isRotated ? image.height : image.width;
-    const maxWidth = Math.min(window.innerWidth - 80, 800);
+    const maxWidth = Math.min(window.innerWidth - 80, 1100);
     const currentScale = Math.min(maxWidth / imgW, 1);
     return 1 / currentScale;
   };
@@ -290,6 +293,17 @@ export function Editor({ imageFile, onReset }: EditorProps) {
     }, 100);
   };
 
+  const handleResizeClick = () => {
+    setSelectedId(null); // Hide transformer before capture
+    setTimeout(() => {
+      const uri = stageRef.current.toDataURL({
+        pixelRatio: getExportPixelRatio(),
+      });
+      setFlattenedImageUrl(uri);
+      setIsResizing(true);
+    }, 100);
+  };
+
   if (!image) return <div className="result-section">Carregando imagem...</div>;
 
   // Calculate canvas size based on image and rotation
@@ -298,8 +312,11 @@ export function Editor({ imageFile, onReset }: EditorProps) {
   const imgHeight = image.height;
 
   // Responsive sizing
-  const maxWidth = Math.min(window.innerWidth - 80, 800);
-  const scale = Math.min(maxWidth / (isRotated ? imgHeight : imgWidth), 1);
+  const maxWidth = Math.min(window.innerWidth - 80, 1100);
+  const maxHeight = Math.min(window.innerHeight - 250, 800);
+  const scaleW = maxWidth / (isRotated ? imgHeight : imgWidth);
+  const scaleH = maxHeight / (isRotated ? imgWidth : imgHeight);
+  const scale = Math.min(scaleW, scaleH, 1);
 
   const canvasWidth = (isRotated ? imgHeight : imgWidth) * scale;
   const canvasHeight = (isRotated ? imgWidth : imgHeight) * scale;
@@ -309,6 +326,13 @@ export function Editor({ imageFile, onReset }: EditorProps) {
       <div className="toolbar">
         <button className="btn-icon" onClick={handleCropClick} title="Recortar">
           <CropIcon size={20} />
+        </button>
+        <button
+          className="btn-icon"
+          onClick={handleResizeClick}
+          title="Redimensionar"
+        >
+          <Maximize size={20} />
         </button>
         <button className="btn-icon" onClick={rotateMain} title="Rotacionar">
           <RotateCw size={20} />
@@ -626,6 +650,23 @@ export function Editor({ imageFile, onReset }: EditorProps) {
             setItems([]);
             setMainRotation(0);
             setIsCropping(false);
+            setFlattenedImageUrl(null);
+          }}
+        />
+      )}
+
+      {isResizing && (
+        <ResizeModal
+          imageUrl={flattenedImageUrl || imageUrl}
+          onClose={() => {
+            setIsResizing(false);
+            setFlattenedImageUrl(null);
+          }}
+          onResizeComplete={(newUrl) => {
+            setImageUrl(newUrl);
+            setItems([]);
+            setMainRotation(0);
+            setIsResizing(false);
             setFlattenedImageUrl(null);
           }}
         />
