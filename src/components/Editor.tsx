@@ -260,6 +260,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
   }, [selectedId, items]);
 
   const getExportPixelRatio = () => {
+    if (!image) return 1;
     const isRotated = mainRotation === 90 || mainRotation === 270;
     const imgW = isRotated ? image.height : image.width;
     const imgH = isRotated ? image.width : image.height;
