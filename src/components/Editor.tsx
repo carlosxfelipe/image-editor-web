@@ -259,7 +259,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
     const imgW = isRotated ? image.height : image.width;
     const maxWidth = Math.min(window.innerWidth - 80, 800);
     const currentScale = Math.min(maxWidth / imgW, 1);
-    return Math.max(1 / currentScale, 2);
+    return 1 / currentScale;
   };
 
   const handleDownload = () => {
@@ -356,6 +356,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
                 [
                   "#ef4444",
                   "#8b5cf6",
+                  "#3b82f6",
                   "#eab308",
                   "#10b981",
                   "#ffffff",

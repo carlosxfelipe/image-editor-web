@@ -236,6 +236,14 @@ p.subtitle {
 }
 
 @media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .glass-card {
+    padding: 1rem;
+  }
+
   .actions-container {
     flex-direction: column;
   }
