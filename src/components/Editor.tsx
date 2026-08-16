@@ -178,10 +178,11 @@ export function Editor({ imageFile, onReset }: EditorProps) {
   };
 
   const addFilterBox = (filterType: "blur" | "pixelate") => {
+    const id = uuidv4();
     setItems([
       ...items,
       {
-        id: uuidv4(),
+        id,
         type: "filter-box",
         x: 50,
         y: 50,
@@ -191,6 +192,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
         filterType,
       },
     ]);
+    setSelectedId(id);
   };
 
   const rotateMain = () => {
@@ -570,7 +572,7 @@ export function Editor({ imageFile, onReset }: EditorProps) {
                       height={item.height || 150}
                       fill="rgba(0,0,0,0.01)"
                       stroke={
-                        selectedId === item.id ? "#8b5cf6" : "rgba(0,0,0,0.1)"
+                        selectedId === item.id ? "#8b5cf6" : "transparent"
                       }
                       strokeWidth={1}
                       dash={[5, 5]}
@@ -653,7 +655,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: "1px solid var(--card-border)",
     borderRadius: "var(--radius-md)",
     overflow: "hidden",
-    display: "inline-block",
+    display: "block",
+    margin: "0 auto",
+    width: "fit-content",
     background: "var(--dropzone-bg)",
     maxWidth: "100%",
   },
